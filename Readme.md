@@ -50,20 +50,20 @@ If you are writing content that uses specialist vocabulary or many acronyms you 
 
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="tipsy/jquery.tipsy.js"></script> <!-- Optional Tooltip -->
+    <script src="tooltip/tooltip.js"></script>
     <script src="jquery.glossarize.js"></script>
     <script>
 
-    $(document).ready(function(){
+    $(function(){
 
       $('.content').glossarizer({
-        /* URL of the JSON file with format */
-        sourceURL: 'glossary.json', 
-        /* Callback once all tags are replaced: Call or tooltip or anything you like */
-        callback: function(){ 
-
-          $('.glossarizer_replace').tipsy();
-
+        sourceURL: 'glossary.json',
+        callback: function(){
+          
+          // Callback fired after glossarizer finishes its job
+          
+          new tooltip();
+          
         }
       });
 
