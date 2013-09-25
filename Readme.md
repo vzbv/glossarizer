@@ -2,6 +2,7 @@
 
 * Reads glossary list from json file or object
 * Automatically searches for and marks up glossary terms found on a page with <abbr> attributes
+* Replaces TextNodes only
 * No involvement from authors
 
 ## What it is
@@ -63,7 +64,7 @@ If you are writing content that uses specialist vocabulary or many acronyms you 
           // Callback fired after glossarizer finishes its job
           
           new tooltip();
-          
+
         }
       });
 
