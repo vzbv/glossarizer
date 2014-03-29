@@ -13,12 +13,12 @@
 	
 	var pluginName = 'glossarizer',
 		defaults = {
-			sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */
-			termData      : '', /* Use Either sourceURL or termData: */
+			sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */			
 			replaceTag    : 'abbr', /* Matching words will be wrapped with abbr tags by default */
 			lookupTagName : 'p, ul', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
-			replaceOnce   : true /* Replace only once in a TextNode */
+			replaceOnce   : true /* Replace only once in a TextNode */,
+			replaceClass: 'glossarizer_replaced'
 		}
 
 	/**
@@ -49,38 +49,33 @@
 		
 		
 		/*
-		Check if sourceURL is set. If not use termData
+		Fetch glossary JSON
 		 */
 		
-		if(base.options.sourceURL){
+	
 
-			$.getJSON(this.options.sourceURL).then(function(data){
+		$.getJSON(this.options.sourceURL).then(function(data){
 
-				base.glossary = data;
-							
-				
-				/**
-				 * Get all terms
-				 */
-				
-				for(var i =0; i< base.glossary.length; i++){
-					base.terms.push(base.glossary[i].term)
-				}
-				
+			base.glossary = data;
+						
+			
+			/**
+			 * Get all terms
+			 */
+			
+			for(var i =0; i< base.glossary.length; i++){
+				base.terms.push(base.glossary[i].term)
+			}
+			
 
-				/**
-				 * Wrap terms
-				 */
-				
-				base.wrapTerms();
+			/**
+			 * Wrap terms
+			 */
+			
+			base.wrapTerms();
 
-			})
+		})
 
-		}else{
-
-			base.setTermData(this.options.termData)
-
-		}
 		
 
 	}
@@ -163,7 +158,7 @@
 
 					data = data.replace(re,function(match){
 
-						return '<abbr class="glossarizer_replaced" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+						return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
 
 					})
 				}          
