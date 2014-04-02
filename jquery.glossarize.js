@@ -1,7 +1,7 @@
 /**
  * Plugin Name: Glossarizer
  * Author : Vinay @Pebbleroad
- * Date: 20/09/2013
+ * Date: 02/04/2013
  * Description: Takes glossary terms from a JSON object -> Searches for terms in your html -> Wraps a abbr tag around the matched word
  */
 
@@ -124,7 +124,7 @@
 		traverser: function(node){      
 
 			var next,
-					base = this;
+				base = this;
 
 			if (node.nodeType === 1) {
 
@@ -134,11 +134,11 @@
 
 				if (node = node.firstChild) {
 						do {
-								// Recursively call traverseChildNodes
-								// on each child node
-								next = node.nextSibling
+							// Recursively call traverseChildNodes
+							// on each child node
+							next = node.nextSibling
 
-								this.traverser(node)
+							this.traverser(node)
 
 						} while(node = next)
 				}
@@ -152,7 +152,7 @@
 				var temp = document.createElement('div'),
 					data = node.data;                      
 
-				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', 'gi');        
+				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption);        
 				
 				if(re.test(data)){          
 
