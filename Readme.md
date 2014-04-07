@@ -2,6 +2,8 @@
 
 * Reads glossary list from json file or object
 * Automatically searches for and marks up glossary terms found on a page with <abbr> attributes
+* Supports terms exclusion
+* Supports multiple terms
 * Replaces TextNodes only
 * No involvement from authors
 
@@ -22,6 +24,14 @@ If you are writing content that uses specialist vocabulary or many acronyms you 
 
     [
       {
+        "term": "death, !death star",
+        "description": "Cessation of all biological functions"
+      },
+      {
+        "term": "genetic, !genetic testing, genes, DNA",
+        "description": "relating to genes or heredity: genetic abnormalities."
+      },
+      {
         "term" : "creature",
         "description" : "A living being, especially an animal"
       },
@@ -36,14 +46,6 @@ If you are writing content that uses specialist vocabulary or many acronyms you 
       {
         "term" : "whales",
         "description" : "An inlet of the Ross Sea in the Ross Ice Shelf of Antarctica. It has been used as a base for Antarctic expeditions since 1911."
-      },
-      {
-        "term" : "winged",
-        "description" : "Having wings or winglike appendages."
-      },
-      {
-        "term" : "midst",
-        "description" : "The condition of being surrounded or beset by something"
       }
     ]
 
