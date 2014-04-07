@@ -110,18 +110,24 @@
 	 */
 	Glossarizer.prototype = {		
 
-		getDescription: function(term){
+		getDescription: function(term){			
 
+			var regex = new RegExp('(^\s*|[^\!])'+term+'\\s*|\\,$', 'i');
 
-			for(var i =0; i< this.glossary.length; i++){
+			/**
+			 * Matches
+			 * 1. Starts with \s* (zero or more spaces)
+			 * 2. or does not contain !
+			 * 3. Ends with zero or more spaces
+			 * 4. Ends with comma
+			 */
 
-				var glossaryterm = this.glossary[i].term.split(',');
-				
-				if(this.glossary[i].term.search(new RegExp(term, "ig")) != -1){
+			for(var i =0; i< this.glossary.length; i++){				
+
+				if(this.glossary[i].term.match(regex)){
 					return this.glossary[i].description
-				}
-
-			}			
+				}				
+			}				
 
 		},
 		
@@ -179,27 +185,49 @@
 				var temp = document.createElement('div'),
 					data = node.data;                      
 
-				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption);
+				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption),
+					reEx = new RegExp('\\b('+this.excludes.join('|')+ ')\\b', base.regexOption);
 				
-				var regex = /le/gi, result, indices = [];
+				
+				if(re.test(data)){      
 
-				while ( (result = re.exec(data)) ) {
-					console.log(result)				    
+					var excl = reEx.exec(data);    
+
+					data = data.replace(re,function(match){
+
+						var ir = new RegExp('\\b'+match+'\\b'),
+							result = ir.exec(data)
+											
+
+						if(result){
+
+							if(excl){
+								
+								var id = result.index,
+									exid = excl.index,
+									exl = excl.index + excl[0].length;
+								
+								if(exid <= id && id <= exl){
+
+									return match;
+									
+								}else{
+
+									return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+
+								}
+							}
+							else{
+
+								return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+							}
+						}
+						
+
+					});
+
 				}
-				
 
-				
-				/* If term exists */
-
-				if(re.test(data)){          
-
-					data = data.replace(re,function(match){						
-
-						return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
-
-					})
-				}          
-			
 
 				temp.innerHTML = data;
 				
