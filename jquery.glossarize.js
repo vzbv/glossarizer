@@ -18,7 +18,7 @@
 			lookupTagName : 'p, ul', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
 			replaceOnce   : false /* Replace only once in a TextNode */,
-			replaceClass: 'glossarizer_replaced'
+			replaceClass: 'glossarizer_replaced'			
 		}
 
 	/**
@@ -39,6 +39,8 @@
 		 */
 		
 		base.terms = [];
+
+		base.excludes = [];
 		
 
 		/**
@@ -64,7 +66,30 @@
 			 */
 			
 			for(var i =0; i< base.glossary.length; i++){
-				base.terms.push(base.glossary[i].term)
+				
+				var terms = base.glossary[i].term.split(',');
+
+				for(var j = 0; j < terms.length; j++){
+
+					/* Trim */
+
+					var trimmed = terms[j].replace(/^\s+|\s+$/g, '');
+					
+					if(trimmed.indexOf('!') == -1){
+
+						/* Glossary terms array */
+						
+						base.terms.push(trimmed)
+
+					}else{
+
+						/* Excluded terms array */
+						
+						base.excludes.push(trimmed.substr(1));
+					}
+				}
+				
+				
 			}
 			
 
@@ -85,16 +110,24 @@
 	 */
 	Glossarizer.prototype = {		
 
-		getDescription: function(term){
+		getDescription: function(term){			
 
-			var regex = new RegExp('^'+term+'$', 'i');
+			var regex = new RegExp('(^\s*|[^\!])'+term+'\\s*|\\,$', 'i');
 
-			for(var i =0; i< this.glossary.length; i++){
+			/**
+			 * Matches
+			 * 1. Starts with \s* (zero or more spaces)
+			 * 2. or does not contain !
+			 * 3. Ends with zero or more spaces
+			 * 4. Ends with comma
+			 */
+
+			for(var i =0; i< this.glossary.length; i++){				
 
 				if(this.glossary[i].term.match(regex)){
 					return this.glossary[i].description
 				}				
-			}			
+			}				
 
 		},
 		
@@ -152,17 +185,49 @@
 				var temp = document.createElement('div'),
 					data = node.data;                      
 
-				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption);        
+				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption),
+					reEx = new RegExp('\\b('+this.excludes.join('|')+ ')\\b', base.regexOption);
 				
-				if(re.test(data)){          
+				
+				if(re.test(data)){      
+
+					var excl = reEx.exec(data);    
 
 					data = data.replace(re,function(match){
 
-						return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+						var ir = new RegExp('\\b'+match+'\\b'),
+							result = ir.exec(data)
+											
 
-					})
-				}          
-			
+						if(result){
+
+							if(excl){
+								
+								var id = result.index,
+									exid = excl.index,
+									exl = excl.index + excl[0].length;
+								
+								if(exid <= id && id <= exl){
+
+									return match;
+									
+								}else{
+
+									return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+
+								}
+							}
+							else{
+
+								return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+							}
+						}
+						
+
+					});
+
+				}
+
 
 				temp.innerHTML = data;
 				
