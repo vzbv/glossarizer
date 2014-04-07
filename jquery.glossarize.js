@@ -87,13 +87,13 @@
 
 		getDescription: function(term){
 
+			var regex = new RegExp('^'+term+'$', 'i');
 
 			for(var i =0; i< this.glossary.length; i++){
-				
-				if(this.glossary[i].term.search(new RegExp(term, "ig")) != -1){
-					return this.glossary[i].description
-				}
 
+				if(this.glossary[i].term.match(regex)){
+					return this.glossary[i].description
+				}				
 			}			
 
 		},
