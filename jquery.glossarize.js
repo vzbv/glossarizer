@@ -18,7 +18,7 @@
 			lookupTagName : 'p, ul', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
 			replaceOnce   : false /* Replace only once in a TextNode */,
-			replaceClass: 'glossarizer_replaced'
+			replaceClass: 'glossarizer_replaced'			
 		}
 
 	/**
@@ -39,6 +39,8 @@
 		 */
 		
 		base.terms = [];
+
+		base.excludes = [];
 		
 
 		/**
@@ -64,7 +66,30 @@
 			 */
 			
 			for(var i =0; i< base.glossary.length; i++){
-				base.terms.push(base.glossary[i].term)
+				
+				var terms = base.glossary[i].term.split(',');
+
+				for(var j = 0; j < terms.length; j++){
+
+					/* Trim */
+
+					var trimmed = terms[j].replace(/^\s+|\s+$/g, '');
+					
+					if(trimmed.indexOf('!') == -1){
+
+						/* Glossary terms array */
+						
+						base.terms.push(trimmed)
+
+					}else{
+
+						/* Excluded terms array */
+						
+						base.excludes.push(trimmed.substr(1));
+					}
+				}
+				
+				
 			}
 			
 
@@ -89,6 +114,8 @@
 
 
 			for(var i =0; i< this.glossary.length; i++){
+
+				var glossaryterm = this.glossary[i].term.split(',');
 				
 				if(this.glossary[i].term.search(new RegExp(term, "ig")) != -1){
 					return this.glossary[i].description
@@ -152,11 +179,21 @@
 				var temp = document.createElement('div'),
 					data = node.data;                      
 
-				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption);        
+				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption);
 				
+				var regex = /le/gi, result, indices = [];
+
+				while ( (result = re.exec(data)) ) {
+					console.log(result)				    
+				}
+				
+
+				
+				/* If term exists */
+
 				if(re.test(data)){          
 
-					data = data.replace(re,function(match){
+					data = data.replace(re,function(match){						
 
 						return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
 

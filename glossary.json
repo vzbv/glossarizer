@@ -1,5 +1,17 @@
 [
   {
+    "term" : "death, !death star",
+    "description" : "A living being, especially an animal"
+  },
+  {
+    "term": "genetic, !genetic testing",
+    "description": "relating to genes or heredity: genetic abnormalities."
+  },
+  {
+    "term": "evidence",
+    "description": "the manner in which someone behaves towards or deals with someone or something: the directive required equal treatment for men and women in social security schemes."
+  },
+  {
     "term" : "creature",
     "description" : "A living being, especially an animal"
   },
