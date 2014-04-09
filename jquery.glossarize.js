@@ -15,7 +15,7 @@
 		defaults = {
 			sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */			
 			replaceTag    : 'abbr', /* Matching words will be wrapped with abbr tags by default */
-			lookupTagName : 'p, ul', /* Lookup in either paragraphs or lists. Do not replace in headings */
+			lookupTagName : 'p, ul, a', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
 			replaceOnce   : false /* Replace only once in a TextNode */,
 			replaceClass: 'glossarizer_replaced'			
@@ -165,13 +165,24 @@
 				 Element Node
 				 */
 
+				//console.log(node.nodeName)
 				if (node = node.firstChild) {
 						do {
 							// Recursively call traverseChildNodes
 							// on each child node
 							next = node.nextSibling
 
-							this.traverser(node)
+							/**
+							 * Check if the node is not glossarized
+							 */
+
+							if(	node.nodeName != 'ABBR' && 
+								node.className != this.options.replaceClass)
+							{
+								
+								this.traverser(node)
+
+							}
 
 						} while(node = next)
 				}
