@@ -73,9 +73,10 @@
 
 					/* Trim */
 
-					var trimmed = terms[j].replace(/^\s+|\s+$/g, '');
+					var trimmed = terms[j].replace(/^\s+|\s+$/g, ''),
+						isExclusion = trimmed.indexOf('!');
 					
-					if(trimmed.indexOf('!') == -1){
+					if(isExclusion == -1 || isExclusion != 0){
 
 						/* Glossary terms array */
 						
@@ -257,7 +258,7 @@
 
 
 	/**
-	 * External Methods
+	 * Public Methods
 	 */
 	
 	var methods = {
@@ -303,7 +304,7 @@
 			Check if its a method
 			 */
 			
-			if(typeof options == "string" && glossarizer){
+			if(typeof options == "string" && glossarizer  && methods.hasOwnProperty(options) ){
 
 				glossarizer[options].apply(glossarizer)
 
