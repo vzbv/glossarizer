@@ -257,13 +257,65 @@
 
 
 	/**
+	 * External Methods
+	 */
+	
+	var methods = {
+
+		destroy: function(){			
+
+			this.$el.removeData('plugin_' + pluginName);
+
+			/* Remove abbr tag */
+			this.$el.find('.' + this.options.replaceClass).each(function(){
+
+				var $this = $(this),
+					text = $this.text();
+
+
+				$this.replaceWith(text)
+
+			})
+			
+		}
+	}
+
+
+	/**
+	 * Extend Prototype
+	 */
+	
+	Glossarizer.prototype = $.extend({}, Glossarizer.prototype, methods)
+
+	/**
 	 * Plugin
 	 * @param  {[type]} options   
 	 */
 	$.fn[pluginName] =function(options){
 
 		return this.each(function(){
-			if(!$.data(this, 'plugin_' + pluginName)){
+
+
+			var $this = $(this),
+				glossarizer = $this.data('plugin_' + pluginName);
+
+			/*
+			Check if its a method
+			 */
+			
+			if(typeof options == "string" && glossarizer){
+
+				glossarizer[options].apply(glossarizer)
+
+			}else{
+
+				/* Destroy if exists */
+
+				if(glossarizer) glossarizer['destroy'].apply(glossarizer);
+
+
+				/* Initialize */
+			
 				$.data(this, 'plugin_' + pluginName, new Glossarizer(this, options))
 			}
 		});

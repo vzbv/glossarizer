@@ -81,10 +81,28 @@ If you are writing content that uses specialist vocabulary or many acronyms you 
 
 
     defaults = {
-      sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */
-      termData      : '', /* Use Either sourceURL or termData: */
-      replaceTag    : 'abbr', /* Matching words will be wrapped with abbr tags by default */
-      lookupTagName : 'p, ul', /* Lookup in either paragraphs or lists. Do not replace in headings */
-      callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
-      replaceOnce   : true /* Replace only once in a TextNode */
+      sourceURL     : '', 
+      replaceTag    : 'abbr', 
+      lookupTagName : 'p, ul, a',
+      callback      : null,
+      replaceOnce   : true,
+      replaceClass  : glossarizer_replaced
     }
+
+
+## Options
+
+Attribute  | Options                   | Default             | Description
+---        | ---                       | ---                 | ---
+`sourceURL`   | *string*                  | ``              | JSON file url
+`replaceTag`    | *string*                  | `abbr`               | html tag used to replace the matching term
+`lookupTagName`   | *string*                     | `p, ul, a`               | Which nodes to search
+`replaceOnce`    | *string*                  | `null`               | Replace once in a textnode?
+`replaceClass`    | *string*                  | `glossarizer_replaced`               | Class name of the replaceTag
+`callback`    | *method*                  | `null`               | Completed callback 
+
+## External Methods
+
+Attribute  | Options                   | Example
+---        | ---                       | ---     
+`destroy`    | *method*                  | `$('.content').glossarizer('destroy');`
