@@ -205,7 +205,7 @@
 
 					var excl = reEx.exec(data);    
 
-					data = data.replace(re,function(match){
+					data = data.replace(re,function(match, item , offset, string){
 
 						var ir = new RegExp('\\b'+match+'\\b'),
 							result = ir.exec(data)
@@ -215,7 +215,7 @@
 
 							if(excl){
 								
-								var id = result.index,
+								var id = offset,
 									exid = excl.index,
 									exl = excl.index + excl[0].length;
 								
