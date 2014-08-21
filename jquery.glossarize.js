@@ -225,13 +225,13 @@
 									
 								}else{
 
-									return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+									return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
 
 								}
 							}
 							else{
 
-								return '<abbr class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</abbr>'
+								return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
 							}
 						}
 						
