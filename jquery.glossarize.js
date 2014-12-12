@@ -286,7 +286,7 @@
 
 					/**
 					 * Only replace when a match is found					 
-					 * Using jQuery html()
+					 * Resorting to jQuery html()
 					 */
 					
 					$(temp).html(data)
@@ -307,11 +307,6 @@
 
 	};
 
-	function is_all_ws( nod )
-{
-  // Use ECMA-262 Edition 3 String and RegExp features
-  return !(/[^\t\n\r ]/.test(nod.textContent));
-}
 
 	/**
 	 * Public Methods
