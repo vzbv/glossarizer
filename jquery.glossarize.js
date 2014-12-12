@@ -7,27 +7,6 @@
  */
 
 ;(function($){
-    $.extend({        
-        inArrayIn: function(elem, arr, i){            
-            if (typeof elem !== 'string'){
-                return $.inArray.apply(this, arguments);
-            }            
-            if (arr){
-                var len = arr.length;
-                    i = i ? (i < 0 ? Math.max(0, len + i) : i) : 0;
-                elem = elem.toLowerCase();
-                for (; i < len; i++){
-                    if (i in arr && arr[i].toLowerCase() == elem){
-                        return i;
-                    }
-                }
-            }            
-            return -1;
-        }
-    });
-})(jQuery);
-
-;(function($){
 
 	/**
 	 * Defaults
@@ -35,7 +14,7 @@
 	
 	var pluginName = 'glossarizer',
 		defaults = {
-			sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */			
+			sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */	
 			replaceTag    : 'abbr', /* Matching words will be wrapped with abbr tags by default */
 			lookupTagName : 'p, ul, a', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
@@ -54,41 +33,31 @@
 		base.el = el;
 
 		/* Element */
-		base.$el            = $(el)
+		base.$el = $(el)
 
 		/* Extend options */
 
-		base.options        = $.extend({}, defaults, options)
+		base.options = $.extend({}, defaults, options)
 
-		base.isIE8 = !document.addEventListener;
-
-		if(base.isIE8){
-			base.options.replaceTag = 'div';
-		}
-
-		/**
-		 * Terms
-		 */
+		/* Terms */
 		
 		base.terms = [];
 
+		/* Excludes array */
+
 		base.excludes = [];
+
+		/* Replaced words array */
 
 		base.replaced = [];
 		
 
-		/**
-		 * Regex Tags
-		 */
+		/* Regex Tags */
 		
 		base.regexOption = base.options.replaceOnce? 'i': 'ig';
 		
 		
-		/*
-		Fetch glossary JSON
-		 */
-		
-	
+		/* Fetch glossary JSON */
 
 		$.getJSON(this.options.sourceURL).then(function(data){
 
@@ -212,8 +181,7 @@
 							 * Check if the node is not glossarized
 							 */
 
-							if(	node.nodeName != 'ABBR' && 
-								node.className != this.options.replaceClass)
+							if(	node.className != this.options.replaceClass)
 							{
 								
 								this.traverser(node)
@@ -230,9 +198,7 @@
 				 */
 
 				var temp = document.createElement('div'),
-					data = node.data;                      
-
-				temp.style.cssText = "white-space: pre;";
+					data = node.data;
 
 				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption),
 					reEx = new RegExp('\\b('+this.excludes.join('|')+ ')\\b', base.regexOption);
@@ -241,11 +207,11 @@
 				if(re.test(data)){      
 
 					var excl = reEx.exec(data);    
-					//console.log(data)
+					
 					data = data.replace(re,function(match, item , offset, string){
 						
 
-						if($.inArrayIn(match, base.replaced) >= 0){
+						if(inArrayIn(match, base.replaced) >= 0){
 
 							return match;
 						}
@@ -286,7 +252,9 @@
 
 					/**
 					 * Only replace when a match is found					 
-					 * Resorting to jQuery html()
+					 * Resorting to jQuery html() because of IE8 whitespace issue.
+					 * IE 8 removes leading whitespace from Text Nodes. Hence innerhtml doesnt work.
+					 * 
 					 */
 					
 					$(temp).html(data)
@@ -373,6 +341,30 @@
 		});
 
 	}
+
+
+	/**
+	 * In Array
+	 */
+	
+	function inArrayIn(elem, arr, i){            
+        
+        if (typeof elem !== 'string'){
+			return $.inArray.apply(this, arguments);
+        }
+
+        if (arr){
+            var len = arr.length;
+                i = i ? (i < 0 ? Math.max(0, len + i) : i) : 0;
+            elem = elem.toLowerCase();
+            for (; i < len; i++){
+                if (i in arr && arr[i].toLowerCase() == elem){
+                    return i;
+                }
+            }
+        }            
+        return -1;
+    }
 
 
 })(jQuery);
