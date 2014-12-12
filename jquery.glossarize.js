@@ -16,7 +16,7 @@
 		defaults = {
 			sourceURL     : '', /* URL of the JSON file with format {"term": "", "description": ""} */	
 			replaceTag    : 'abbr', /* Matching words will be wrapped with abbr tags by default */
-			lookupTagName : 'p, ul, a', /* Lookup in either paragraphs or lists. Do not replace in headings */
+			lookupTagName : 'p, ul, a, div', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
 			replaceOnce   : false /* Replace only once in a TextNode */,
 			replaceClass: 'glossarizer_replaced'			
@@ -225,7 +225,7 @@
 
 						if(result){
 
-							if(excl){
+							if(excl && base.excludes.length){
 								
 								var id = offset,
 									exid = excl.index,
