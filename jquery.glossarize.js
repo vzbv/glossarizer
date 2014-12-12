@@ -104,6 +104,7 @@
 			
 			base.wrapTerms();
 
+
 		})
 
 		
@@ -117,7 +118,7 @@
 
 		getDescription: function(term){			
 
-			var regex = new RegExp('(^\s*|[^\!])'+term+'\\s*|\\,$', 'i');
+			var regex = new RegExp('(^\s*|[^\!])'+this.clean(term)+'\\s*|\\,$', 'i');
 
 			/**
 			 * Matches
@@ -129,10 +130,15 @@
 
 			for(var i =0; i< this.glossary.length; i++){				
 
-				if(this.glossary[i].term.match(regex)){
-					return this.glossary[i].description
+				if(this.glossary[i].term.match(regex)){										
+					return this.glossary[i].description.replace(/\"/gi, '&quot;')
 				}				
 			}				
+
+		},
+		clean: function(text){
+
+			return text.replace('(', "\\(").replace(')', "\\)")
 
 		},
 		
@@ -140,6 +146,9 @@
 		 * Wraps the matched terms by calling traverser     
 		 */
 		wrapTerms: function(){
+
+			this.cleanedTerms = this.clean(this.terms.join('|'))
+			this.excludedTerms = this.clean(this.excludes.join('|'))
 			
 			var nodes = this.el.querySelectorAll(this.options.lookupTagName)					
 
@@ -169,8 +178,7 @@
 				/*
 				 Element Node
 				 */
-
-				//console.log(node.nodeName)
+				
 				if (node = node.firstChild) {
 						do {
 							// Recursively call traverseChildNodes
@@ -200,12 +208,12 @@
 				var temp = document.createElement('div'),
 					data = node.data;
 
-				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption),
-					reEx = new RegExp('\\b('+this.excludes.join('|')+ ')\\b', base.regexOption);
+				var re = new RegExp('(?:^|\\b)('+this.cleanedTerms+ ')(?!\\w)', base.regexOption),
+					reEx = new RegExp('(?:^|\\b)('+this.excludedTerms+ ')(?!\\w)', base.regexOption);
 				
 				
 				if(re.test(data)){      
-
+					
 					var excl = reEx.exec(data);    
 					
 					data = data.replace(re,function(match, item , offset, string){
@@ -218,11 +226,10 @@
 						
 						base.replaced.push(match);
 						
-
-						var ir = new RegExp('\\b'+match+'\\b'),
+						var ir = new RegExp('(?:^|\\b)'+base.clean(match)+'(?!\\w)'),
 							result = ir.exec(data)
-											
-
+						
+						
 						if(result){
 
 							if(excl && base.excludes.length){
@@ -237,13 +244,13 @@
 									
 								}else{
 
-									return '<'+base.options.replaceTag+' class=\"'+base.options.replaceClass+'\" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
+									return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
 
 								}
 							}
 							else{
 
-								return '<'+base.options.replaceTag+' class=\"'+base.options.replaceClass+'\" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
+								return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
 							}
 						}
 						
