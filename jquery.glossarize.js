@@ -232,6 +232,8 @@
 				var temp = document.createElement('div'),
 					data = node.data;                      
 
+				temp.style.cssText = "white-space: pre;";
+
 				var re = new RegExp('\\b('+this.terms.join('|')+ ')\\b', base.regexOption),
 					reEx = new RegExp('\\b('+this.excludes.join('|')+ ')\\b', base.regexOption);
 				
@@ -239,7 +241,7 @@
 				if(re.test(data)){      
 
 					var excl = reEx.exec(data);    
-
+					//console.log(data)
 					data = data.replace(re,function(match, item , offset, string){
 						
 
@@ -269,13 +271,13 @@
 									
 								}else{
 
-									return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
+									return '<'+base.options.replaceTag+' class=\"'+base.options.replaceClass+'\" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
 
 								}
 							}
 							else{
 
-								return '<'+base.options.replaceTag+' class="'+base.options.replaceClass+'" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
+								return '<'+base.options.replaceTag+' class=\"'+base.options.replaceClass+'\" title="'+base.getDescription(match)+'">'+ match + '</'+base.options.replaceTag+'>'
 							}
 						}
 						
@@ -284,9 +286,12 @@
 
 					/**
 					 * Only replace when a match is found					 
+					 * Using jQuery html()
 					 */
-					temp.innerHTML = data;
-				
+					
+					$(temp).html(data)
+
+					
 				
 					while (temp.firstChild) {          
 						node.parentNode.insertBefore(temp.firstChild, node)
@@ -302,6 +307,11 @@
 
 	};
 
+	function is_all_ws( nod )
+{
+  // Use ECMA-262 Edition 3 String and RegExp features
+  return !(/[^\t\n\r ]/.test(nod.textContent));
+}
 
 	/**
 	 * Public Methods

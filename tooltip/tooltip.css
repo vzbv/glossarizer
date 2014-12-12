@@ -1,4 +1,4 @@
-#tooltip
+ #tooltip
 {
     text-align: center;
     color: #fff;
@@ -8,6 +8,8 @@
     z-index: 100;
     padding: 15px;
     border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 10px;
 }
 
     @media only screen and (max-width: 800px){
@@ -39,9 +41,10 @@
         {
             border-top-color: transparent;
             border-bottom: 10px solid #111;
-            top: -20px;
+            top: -20px;                         
             bottom: auto;
         }
+
  
         #tooltip.left:after
         {
