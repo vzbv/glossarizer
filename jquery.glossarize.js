@@ -138,7 +138,9 @@
 		},
 		clean: function(text){
 
-			return text.replace('(', "\\(").replace(')', "\\)")
+			var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g')
+			
+			return text.replace(reEscape, '\\$1')
 
 		},
 		

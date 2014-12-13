@@ -4,7 +4,7 @@ describe("Glossarizr", function() {
 
     beforeEach(function(){
 
-        fixture = $('<div class="content"><p>Hey its the god of death, but he is travelling to the death star</p></div>')
+        fixture = $('<div class="content"><p>Hey its the god of death,  Power of Attorney (POA) but he is travelling to the death star</p></div>')
     })
 
 
@@ -26,6 +26,12 @@ describe("Glossarizr", function() {
         it('should markup the word `death`', function(){
             
             expect(fixture.find('abbr').eq(0).text()).toBe('death')
+
+        })
+
+        it('should markup the word `Power of Attorney (POA)`', function(){
+            
+            expect(fixture.find('abbr').eq(1).text()).toBe('Power of Attorney (POA)')
 
         })
 
