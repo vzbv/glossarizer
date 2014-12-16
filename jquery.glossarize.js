@@ -18,7 +18,7 @@
 			replaceTag    : 'abbr', /* Matching words will be wrapped with abbr tags by default */
 			lookupTagName : 'p, ul, a, div', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
-			replaceOnce   : true /* Replace only once in a TextNode */,
+			replaceOnce   : false /* Replace only once in a TextNode */,
 			replaceClass: 'glossarizer_replaced'			
 		}
 
@@ -221,7 +221,7 @@
 					data = data.replace(re,function(match, item , offset, string){
 						
 
-						if(!base.options.replaceOnce && inArrayIn(match, base.replaced) >= 0){
+						if(base.options.replaceOnce && inArrayIn(match, base.replaced) >= 0){
 
 							return match;
 						}
