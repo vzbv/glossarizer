@@ -118,14 +118,13 @@
 
 		getDescription: function(term){			
 
-			var regex = new RegExp('(^\s*|[^\!])'+this.clean(term)+'\\s*|\\,$', 'i');
+			var regex = new RegExp('(^\s*)'+this.clean(term)+'\\s*|\\,$', 'i');
 
 			/**
 			 * Matches
-			 * 1. Starts with \s* (zero or more spaces)
-			 * 2. or does not contain !
-			 * 3. Ends with zero or more spaces
-			 * 4. Ends with comma
+			 * 1. Starts with \s* (zero or more spaces)			 
+			 * 2. Ends with zero or more spaces
+			 * 3. Ends with comma
 			 */
 
 			for(var i =0; i< this.glossary.length; i++){				
