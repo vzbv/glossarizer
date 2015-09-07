@@ -118,7 +118,7 @@
 
 		getDescription: function(term){			
 
-			var regex = new RegExp('(^\s*)'+this.clean(term)+'\\s*|\\,$', 'i');
+			var regex = new RegExp('(\,|\s*)'+this.clean(term)+'\\s*|\\,$', 'i');
 
 			/**
 			 * Matches
@@ -126,7 +126,7 @@
 			 * 2. Ends with zero or more spaces
 			 * 3. Ends with comma
 			 */
-
+			
 			for(var i =0; i< this.glossary.length; i++){				
 
 				if(this.glossary[i].term.match(regex)){										
