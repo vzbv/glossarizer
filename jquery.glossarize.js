@@ -19,7 +19,8 @@
 			lookupTagName : 'p, ul, a, div', /* Lookup in either paragraphs or lists. Do not replace in headings */
 			callback      : null, /* Callback once all tags are replaced: Call or tooltip or anything you like */
 			replaceOnce   : false /* Replace only once in a TextNode */,
-			replaceClass: 'glossarizer_replaced'			
+			replaceClass  : 'glossarizer_replaced',
+			caseSensitive : false
 		}
 
 	/**
@@ -54,7 +55,9 @@
 
 		/* Regex Tags */
 		
-		base.regexOption = base.options.replaceOnce? 'i': 'ig';
+		base.regexOption = (base.options.caseSensitive? '': 'i') + (base.options.replaceOnce? '': 'g');
+
+		console.log(base.regexOption)
 		
 		
 		/* Fetch glossary JSON */
