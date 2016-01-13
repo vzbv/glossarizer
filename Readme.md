@@ -86,7 +86,8 @@ If you are writing content that uses specialist vocabulary or many acronyms you 
       lookupTagName : 'p, ul, a',
       callback      : null,
       replaceOnce   : true,
-      replaceClass  : glossarizer_replaced
+      replaceClass  : glossarizer_replaced,
+      caseSensitive : false
     }
 
 
@@ -100,6 +101,7 @@ Attribute  | Options                   | Default             | Description
 `replaceOnce`    | *string*                  | `null`               | Replace once in a textnode?
 `replaceClass`    | *string*                  | `glossarizer_replaced`               | Class name of the replaceTag
 `callback`    | *method*                  | `null`               | Completed callback 
+`caseSensitive`    | *boolean*                  | `false`               | Match case sensitive
 
 ## External Methods
 
