@@ -57,8 +57,6 @@
 		
 		base.regexOption = (base.options.caseSensitive? '': 'i') + (base.options.replaceOnce? '': 'g');
 
-		console.log(base.regexOption)
-		
 		
 		/* Fetch glossary JSON */
 
