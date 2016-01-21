@@ -1,3 +1,5 @@
+This is modified version to match our requirements. See commit history for implemented changes.
+
 # Glossarizer
 
 * Reads glossary list from json file or object
