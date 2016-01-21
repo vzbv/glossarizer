@@ -9,8 +9,8 @@
             target  = false,
             tooltip = false,
             title   = false;
-     
-        targets.bind( 'mouseenter', function()
+
+        targets.bind( 'click', function()
         {
             target  = $( this );
             tip     = target.attr( 'title' );
@@ -74,9 +74,14 @@
      
                 target.attr( 'title', tip );
             };
-     
-            target.bind( 'mouseleave', remove_tooltip );
-            tooltip.bind( 'click', remove_tooltip );
+
+            // target.bind( 'mouseleave', remove_tooltip );
+            // tooltip.bind( 'click', remove_tooltip );
+            $(document).on('click', function(event) {
+              if (!$(event.target).closest(target).length) {
+                remove_tooltip();
+              }
+            });
         });
 
     }
