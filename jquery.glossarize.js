@@ -72,7 +72,7 @@
 			
 			for(var i =0; i< base.glossary.length; i++){
 				
-				var terms = base.glossary[i].term.split(',');
+				var terms = base.glossary[i].termSynonyms.split(',');
 
 				for(var j = 0; j < terms.length; j++){
 
@@ -130,10 +130,8 @@
 			
 			for(var i =0; i< this.glossary.length; i++){				
 
-				if(this.glossary[i].term.match(regex)){										
-					return this.glossary[i].description.replace(/\"/gi, '&quot;')
-				}				
-			}				
+				if(this.glossary[i].termSynonyms.match(regex)){
+					return this.glossary[i].termDescription.replace(/\"/gi, '&quot;')
 
 		},
 		clean: function(text){
