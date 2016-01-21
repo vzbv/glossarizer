@@ -132,6 +132,9 @@
 
 				if(this.glossary[i].termSynonyms.match(regex)){
 					return this.glossary[i].termDescription.replace(/\"/gi, '&quot;')
+						+ this.glossary[i].termLink.replace("Ansicht", "weitere Informationen").replace(/\"/gi, '&quot;');
+				}
+			}
 
 		},
 		clean: function(text){
